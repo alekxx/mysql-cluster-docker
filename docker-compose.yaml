@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  mysql_mgmt:
+    image: mysql/mysql-cluster:8.0
+    command: ndb_mgmd
+    volumes:
+      - ./db/config/my.cnf:/etc/my.cnf
+      - ./db/config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+
+  mysql_data_node1:
+    image: mysql/mysql-cluster:8.0
+    command: ndbd
+    volumes:
+      - ./db/config/my.cnf:/etc/my.cnf
+      - ./db/config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    depends_on:
+      - mysql_mgmt
+
+  mysql_data_node2:
+    image: mysql/mysql-cluster:8.0
+    command: ndbd
+    volumes:
+      - ./db/config/my.cnf:/etc/my.cnf
+      - ./db/config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+    depends_on:
+      - mysql_mgmt
+
+  mysql_sql_node:
+    image: mysql/mysql-cluster:8.0
+    command: mysqld
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/config/my.cnf:/etc/my.cnf
+      - ./db/config/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+      - ./db/data:/var/lib/mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_LOG_CONSOLE: ${MYSQL_LOG_CONSOLE:-true}
+    depends_on:
+      - mysql_mgmt
+      - mysql_data_node1
+      - mysql_data_node2
