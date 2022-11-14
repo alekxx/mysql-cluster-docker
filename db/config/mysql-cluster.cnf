@@ -10,10 +10,12 @@ DataDir=/var/lib/mysql
 [ndbd]
 hostname=mysql_data_node1
 NodeId=2
+DataDir=/var/lib/mysql
 
 [ndbd]
 hostname=mysql_data_node2
 NodeId=3
+DataDir=/var/lib/mysql
 
 [mysqld]
 hostname=mysql_sql_node
