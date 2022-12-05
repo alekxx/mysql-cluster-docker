@@ -1,4 +1,4 @@
-# MySQL Cluster with Docker Compose
+# NodeJS express server with MySQL Cluster
  Docker Compose configuration to create [MySQL Cluster](https://hub.docker.com/r/mysql/mysql-cluster). 
  
  The basic confguration contains:
@@ -9,7 +9,7 @@
 ## How to run
 ### Prerequisities
 Create your own `.env` file based on `.env.template`
-### Start Cluster
+### Start App and MySQL Cluster
 ```bash
 docker-compose up -d
 ```
@@ -25,5 +25,9 @@ More Cluster Management Client commands [here](https://dev.mysql.com/doc/refman/
 Connect with any mysql client, use default port `3306` and credentials defined in `.env` file.
 Testing data can be found in `db/sql`.
 
+## CI
+GitHub Actions run on each push to main or each PR. 
+Config to be found in `.github/workflows/actions.yml`.
+
 ## Disclaimer
-For development usage only. Not tested and might contain bugs.
+For development usage only. Not tested.
